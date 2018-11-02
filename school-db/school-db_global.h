@@ -1,0 +1,4 @@
+#ifndef SCHOOLDB_GLOBAL_H
+#define SCHOOLDB_GLOBAL_H
+
+#endif // SCHOOLDB_GLOBAL_H
