@@ -1,67 +1,79 @@
-#include "AlbumDao.h"
+#include "alumnodao.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
 
-#include "Album.h"
+#include "alumno.h"
 #include "DatabaseManager.h"
 
 using namespace std;
 
-AlbumDao::AlbumDao(QSqlDatabase& database) :
+AlumnoDao::AlumnoDao(QSqlDatabase& database) :
     mDatabase(database)
 {
 }
 
-void AlbumDao::init() const
+void AlumnoDao::init() const
 {
-    if (!mDatabase.tables().contains("albums")) {
+    if (!mDatabase.tables().contains("alumno")) {
         QSqlQuery query(mDatabase);
-        query.exec("CREATE TABLE albums (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
+        /*TODO: crear tabla pendiente*/
+        query.exec("CREATE TABLE alumno (\
+        id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        apellido TEXT, nombre TEXT, nacimiento TEXT, dni TEXT)");
+
         DatabaseManager::debugQuery(query);
     }
 }
 
-void AlbumDao::addAlbum(Album& album) const
+void AlumnoDao::add(Alumno& item) const
 {
     QSqlQuery query(mDatabase);
-    query.prepare("INSERT INTO albums (name) VALUES (:name)");
-    query.bindValue(":name", album.name());
+    query.prepare("INSERT INTO alumno (apellido, nombre, nacimiento, dni) VALUES (:apellido, :nombre, :nacimiento, :dni)");
+    query.bindValue(":apellido", item.getApellido());
+    query.bindValue(":nombre", item.getNombre());
+    query.bindValue(":nacimiento", item.getNacimiento().toString());
+    query.bindValue(":dni", item.getDni());
     query.exec();
-    album.setId(query.lastInsertId().toInt());
+    item.setId(query.lastInsertId().toInt());
     DatabaseManager::debugQuery(query);
 }
 
-void AlbumDao::updateAlbum(const Album& album)const
+void AlumnoDao::update(const Alumno& item)const
 {
     QSqlQuery query(mDatabase);
-    query.prepare("UPDATE albums SET name = (:name) WHERE id = (:id)");
-    query.bindValue(":name", album.name());
-    query.bindValue(":id", album.id());
-    query.exec();
-    DatabaseManager::debugQuery(query);
-}
-
-void AlbumDao::removeAlbum(int id) const
-{
-    QSqlQuery query(mDatabase);
-    query.prepare("DELETE FROM albums WHERE id = (:id)");
-    query.bindValue(":id", id);
+    query.prepare("UPDATE alumno SET apellido = (:apellido), nombre = (:nombre) WHERE dni = (:dni)");
+    query.bindValue(":apellido", item.getApellido());
+    query.bindValue(":nombre", item.getNombre());
+    query.bindValue(":dni", item.getDni());
     query.exec();
     DatabaseManager::debugQuery(query);
 }
 
-unique_ptr<vector<unique_ptr<Album>>> AlbumDao::albums() const
+void AlumnoDao::remove(QString dni) const
 {
-    QSqlQuery query("SELECT * FROM albums", mDatabase);
+    QSqlQuery query(mDatabase);
+    query.prepare("DELETE FROM alumno WHERE dni = (:dni)");
+    query.bindValue(":dni", dni);
     query.exec();
-    unique_ptr<vector<unique_ptr<Album>>> list(new vector<unique_ptr<Album>>());
+    DatabaseManager::debugQuery(query);
+}
+
+unique_ptr<vector<unique_ptr<Alumno>>> AlumnoDao::alumnos() const
+{
+    QSqlQuery query("SELECT * FROM alumno", mDatabase);
+    query.exec();
+    unique_ptr<vector<unique_ptr<Alumno>>> list(new vector<unique_ptr<Alumno>>());
     while(query.next()) {
-        unique_ptr<Album> album(new Album());
-        album->setId(query.value("id").toInt());
-        album->setName(query.value("name").toString());
-        list->push_back(move(album));
+        unique_ptr<Alumno> alumno(new Alumno());
+        alumno->setId(query.value("id").toInt());
+        alumno->setNombre(query.value("nombre").toString());
+        alumno->setApellido(query.value("apellido").toString());
+        alumno->setDni(query.value("dni").toString());
+        /*TODO: arreglar Nacimiento*/
+        //alumno->setNacimiento(new Fecha(query.value("nacimiento").toString()));
+        list->push_back(move(alumno));
     }
     return list;
 }

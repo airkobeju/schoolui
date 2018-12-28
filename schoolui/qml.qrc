@@ -1,5 +1,38 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>qml/main.qml</file>
+        <file>img/school.png</file>
+        <file>components/ItemGrid.qml</file>
+        <file>img/computacion_icon.png</file>
+        <file>img/comunicacion_icon.png</file>
+        <file>img/icon_sports.png</file>
+        <file>img/math_icon.png</file>
+        <file>frm/FrmListAlumno.qml</file>
+        <file>frm/FrmSaveAlumno.qml</file>
+        <file>components/ItemDrawer.qml</file>
+        <file>frm/FrmListObjects.qml</file>
+        <file>components/ItemListObjects.qml</file>
+        <file>img/reload.png</file>
+        <file>frm/FrmFileAlumnos.qml</file>
+        <file>javascript/database.js</file>
+        <file>javascript/gradomodel.js</file>
+        <file>javascript/alumnomodel.js</file>
+        <file>javascript/asignaturamodel.js</file>
+        <file>javascript/yearlectivomodel.js</file>
+        <file>javascript/matriculamodel.js</file>
+        <file>javascript/cursomodel.js</file>
+        <file>javascript/sesionmodel.js</file>
+        <file>javascript/asistenciamodel.js</file>
+        <file>javascript/competenciamodel.js</file>
+        <file>javascript/capacidadmodel.js</file>
+        <file>javascript/desempenomodel.js</file>
+        <file>javascript/sesiondesempenomodel.js</file>
+        <file>javascript/listas.js</file>
+        <file>components/SwipeCheckButton.qml</file>
+        <file>javascript/matrix.js</file>
+        <file>components/DatabaseController.qml</file>
+        <file>components/JTextField.qml</file>
+        <file>components/JTextFieldForm.ui.qml</file>
+        <file>frm/FrmMatriculaGradoAlumnos.qml</file>
     </qresource>
 </RCC>

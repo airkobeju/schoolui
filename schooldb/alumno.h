@@ -3,7 +3,7 @@
 
 #include <QString>
 #include "commons/fecha.h"
-#include "school-db_global.h"
+#include "schooldb_global.h"
 
 class SCHOOLDBSHARED_EXPORT Alumno
 {
@@ -22,11 +22,12 @@ public:
     QString getDni() const;
     void setDni(const QString &value);
 
-    QString getId() const;
-    void setId(const QString &value);
+    int getId() const;
+    void setId(int value);
 
 private:
-    QString id, apellido, nombre, dni;
+    int id;
+    QString apellido, nombre, dni;
     Fecha nacimiento;
 
 };

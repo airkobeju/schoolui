@@ -45,12 +45,12 @@ void Alumno::setDni(const QString &value)
     dni = value;
 }
 
-QString Alumno::getId() const
+int Alumno::getId() const
 {
     return id;
 }
 
-void Alumno::setId(const QString &value)
+void Alumno::setId(int value)
 {
     id = value;
 }

@@ -1,5 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickStyle>
+
+#include "utils/fileio.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,7 +11,12 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    qmlRegisterType<FileIO, 1>("SchoolUI.Utils", 1, 0, "FileIO");
+
+    //QQuickStyle::setStyle("Material");
+
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 

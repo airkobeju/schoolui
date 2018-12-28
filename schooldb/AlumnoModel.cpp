@@ -1,65 +1,65 @@
-#include "AlbumModel.h"
+#include "AlumnoModel.h"
 
 using namespace std;
 
-AlbumModel::AlbumModel(QObject* parent) :
+AlumnoModel::AlumnoModel(QObject* parent) :
     QAbstractListModel(parent),
     mDb(DatabaseManager::instance()),
-    mAlbums(mDb.albumDao.albums())
+    mAlumnos(mDb.alumnoDao.alumnos())
 {
 }
 
-QModelIndex AlbumModel::addAlbum(const Album& album)
+QModelIndex AlumnoModel::add(const Alumno& item)
 {
     int rowIndex = rowCount();
     beginInsertRows(QModelIndex(), rowIndex, rowIndex);
-    unique_ptr<Album> newAlbum(new Album(album));
-    mDb.albumDao.addAlbum(*newAlbum);
-    mAlbums->push_back(move(newAlbum));
+    unique_ptr<Alumno> newAlumno(new Alumno(item));
+    mDb.alumnoDao.add(*newAlumno);
+    mAlumnos->push_back(move(newAlumno));
     endInsertRows();
     return index(rowIndex, 0);
 }
 
-int AlbumModel::rowCount(const QModelIndex& parent) const
+int AlumnoModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return mAlbums->size();
+    return mAlumnos->size();
 }
 
-QVariant AlbumModel::data(const QModelIndex& index, int role) const
+QVariant AlumnoModel::data(const QModelIndex& index, int role) const
 {
     if (!isIndexValid(index)) {
         return QVariant();
     }
-    const Album& album = *mAlbums->at(index.row());
+    const Alumno& alumno = *mAlumnos->at(index.row());
 
     switch (role) {
         case Roles::IdRole:
-            return album.id();
+            return alumno.getId();
 
         case Roles::NameRole:
         case Qt::DisplayRole:
-            return album.name();
+            return alumno.getNombre();
 
         default:
             return QVariant();
     }
 }
 
-bool AlbumModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool AlumnoModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (!isIndexValid(index)
             || role != Roles::NameRole) {
         return false;
     }
-    Album& album = *mAlbums->at(index.row());
-    album.setName(value.toString());
-    mDb.albumDao.updateAlbum(album);
+    Alumno& alumno = *mAlumnos->at(index.row());
+    alumno.setNombre(value.toString());
+    mDb.alumnoDao.update(alumno);
     emit dataChanged(index, index);
     return true;
 }
 
-bool AlbumModel::removeRows(int row, int count, const QModelIndex& parent)
+bool AlumnoModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     if (row < 0
             || row >= rowCount()
@@ -70,16 +70,16 @@ bool AlbumModel::removeRows(int row, int count, const QModelIndex& parent)
     beginRemoveRows(parent, row, row + count - 1);
     int countLeft = count;
     while (countLeft--) {
-        const Album& album = *mAlbums->at(row + countLeft);
-        mDb.albumDao.removeAlbum(album.id());
+        const Alumno& alumno = *mAlumnos->at(row + countLeft);
+        mDb.alumnoDao.remove(alumno.getDni());
     }
-    mAlbums->erase(mAlbums->begin() + row,
-                  mAlbums->begin() + row + count);
+    mAlumnos->erase(mAlumnos->begin() + row,
+                  mAlumnos->begin() + row + count);
     endRemoveRows();
     return true;
 }
 
-QHash<int, QByteArray> AlbumModel::roleNames() const
+QHash<int, QByteArray> AlumnoModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[Roles::IdRole] = "id";
@@ -87,7 +87,7 @@ QHash<int, QByteArray> AlbumModel::roleNames() const
     return roles;
 }
 
-bool AlbumModel::isIndexValid(const QModelIndex& index) const
+bool AlumnoModel::isIndexValid(const QModelIndex& index) const
 {
     if (index.row() < 0
             || index.row() >= rowCount()

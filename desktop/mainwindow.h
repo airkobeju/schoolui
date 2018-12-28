@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "databasemanager.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,6 +19,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    void connectDb();
 };
 
 #endif // MAINWINDOW_H

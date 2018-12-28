@@ -1,16 +1,16 @@
-#ifndef ALBUMMODEL_H
-#define ALBUMMODEL_H
+#ifndef ALUMNOMODEL_H
+#define ALUMNOMODEL_H
 
 #include <QAbstractListModel>
 #include <QHash>
 #include <vector>
 #include <memory>
 
-#include "gallery-core_global.h"
-#include "Album.h"
+#include "schooldb_global.h"
+#include "alumno.h"
 #include "DatabaseManager.h"
 
-class GALLERYCORESHARED_EXPORT AlbumModel : public QAbstractListModel
+class SCHOOLDBSHARED_EXPORT AlumnoModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -20,9 +20,9 @@ public:
         NameRole,
     };
 
-    AlbumModel(QObject* parent = 0);
+    AlumnoModel(QObject* parent = nullptr);
 
-    QModelIndex addAlbum(const Album& album);
+    QModelIndex add(const Alumno& item);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -35,7 +35,7 @@ private:
 
 private:
     DatabaseManager& mDb;
-    std::unique_ptr<std::vector<std::unique_ptr<Album>>> mAlbums;
+    std::unique_ptr<std::vector<std::unique_ptr<Alumno>>> mAlumnos;
 };
 
-#endif // ALBUMMODEL_H
+#endif // ALUMNOMODEL_H

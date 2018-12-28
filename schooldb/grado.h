@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#include "school-db_global.h"
+#include "schooldb_global.h"
 
 class SCHOOLDBSHARED_EXPORT Grado
 {

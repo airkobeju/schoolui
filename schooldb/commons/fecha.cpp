@@ -13,6 +13,12 @@ Fecha::Fecha(int year, int month, int day)
     this->day = day;
 }
 
+Fecha::Fecha(QString fecha)
+{
+    Q_UNUSED(fecha);
+    /*TODO: crear algoritmo para obtener la fecha desde el String YYYY-mm-dd*/
+}
+
 Fecha &Fecha::operator=(const Fecha &f1)
 {
     if(&f1 != this){          //evita la autoasignaci¢n
@@ -53,4 +59,9 @@ int Fecha::getDay() const
 void Fecha::setDay(int value)
 {
     day = value;
+}
+
+QString Fecha::toString()
+{
+    return QString::number(getYear()) + "-" + QString::number(getMonth())+"-"+QString::number(getDay());
 }

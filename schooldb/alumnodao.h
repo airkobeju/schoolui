@@ -1,25 +1,27 @@
-#ifndef ALBUMDAO_H
-#define ALBUMDAO_H
+#ifndef ALUMNODAO_H
+#define ALUMNODAO_H
 
 #include <memory>
 #include <vector>
 
-class QSqlDatabase;
-class Album;
+#include <QString>
 
-class AlbumDao
+class QSqlDatabase;
+class Alumno;
+
+class AlumnoDao
 {
 public:
-    AlbumDao(QSqlDatabase& database);
+    AlumnoDao(QSqlDatabase& database);
     void init() const;
 
-    void addAlbum(Album& album) const;
-    void updateAlbum(const Album& album) const;
-    void removeAlbum(int id) const;
-    std::unique_ptr<std::vector<std::unique_ptr<Album>>> albums() const;
+    void add(Alumno& item) const;
+    void update(const Alumno& item) const;
+    void remove(QString dni) const;
+    std::unique_ptr<std::vector<std::unique_ptr<Alumno>>> alumnos() const;
 
 private:
     QSqlDatabase& mDatabase;
 };
 
-#endif // ALBUMDAO_H
+#endif // ALUMNODAO_H
